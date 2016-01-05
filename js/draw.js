@@ -55,14 +55,14 @@ function canvasApp() {
 		return color;
 	}
 
-	function generateColor(alpha) {
-		var r1 = Math.floor(Math.random() * 255);
-		var g1 = Math.floor(Math.random() * 128);
-		var b1 = Math.floor(Math.random() * 128);
+	function generateColor(alpha, rmax, gmax, bmax) {
+		var r1 = Math.floor(Math.random() * rmax);
+		var g1 = Math.floor(Math.random() * gmax);
+		var b1 = Math.floor(Math.random() * bmax);
 		return rgbaToColor(r1, g1, b1, alpha);
 	}
 
-	function drawInfinity(a, tx, ty, rotationAngle, alpha, lineWidth) {
+	function drawInfinity(a, tx, ty, rotationAngle, alpha, lineWidth, rmax, gmax, bmax) {
 		var t = -Math.PI;
 		var scale = a * Math.sqrt(2);
 		var x, y;
@@ -70,7 +70,7 @@ function canvasApp() {
 
 		context.translate(tx, ty);
 		context.rotate(rotationAngle * Math.PI / 180);
-		context.strokeStyle = generateColor(alpha);
+		context.strokeStyle = generateColor(alpha, rmax, gmax, bmax);
 		context.lineWidth = lineWidth;
 		context.beginPath();
 
@@ -87,16 +87,57 @@ function canvasApp() {
 	}
 
 	function drawBackground(count) {
+		function random(a, b) {
+			return a + Math.random() * (b - a);
+		}
+
 		var i = 0;
 		var tx, ty, rotationAngle, lineWidth, alpha, a;
 		for (i = 0; i < count; ++i) {
 			a = Math.random() * 10;
-			tx = Math.random() * displayWidth;
-			ty = Math.random() * displayHeight;
+			tx = random(0, displayWidth / 3);
+			ty = random(0, displayHeight);
 			rotationAngle = Math.random() * 90;
 			lineWidth = Math.random() * 20;
 			alpha = Math.max(Math.random() / 10, 0.1);
-			drawInfinity(a, tx, ty, rotationAngle, alpha, lineWidth);
+			drawInfinity(a, tx, ty, rotationAngle, alpha, lineWidth, 255, 64, 64);
+		}
+
+		for (i = 0; i < count; ++i) {
+			a = Math.random() * 5;
+			tx = random(0, displayWidth / 3);
+			ty = random(0, displayHeight);
+			rotationAngle = Math.random() * 90;
+			lineWidth = Math.random() * 20;
+			alpha = Math.max(Math.random() / 10, 0.1);
+			drawInfinity(a, tx, ty, rotationAngle, alpha, lineWidth, 255, 64, 64);
+		}
+
+		for (i = 0; i < count; ++i) {
+			a = Math.random() * 5;
+			tx = random(displayWidth / 3, 2 * displayWidth / 3);
+			ty = random(0, displayHeight);
+			rotationAngle = Math.random() * 90;
+			lineWidth = Math.random() * 20;
+			alpha = Math.max(Math.random() / 10, 0.1);
+			drawInfinity(a, tx, ty, rotationAngle, alpha, lineWidth, 64, 255, 64);
+		}
+
+		for (i = 0; i < count; ++i) {
+			a = Math.random() * 5;
+			tx = random(2 * displayWidth / 3, displayWidth);
+			ty = random(0, displayHeight);
+			rotationAngle = Math.random() * 90;
+			lineWidth = Math.random() * 20;
+			alpha = Math.max(Math.random() / 10, 0.1);
+			drawInfinity(a, tx, ty, rotationAngle, alpha, lineWidth, 64, 64, 255);
+		}
+
+	}
+
+	function drawCentral(rotationAngle) {
+		for (i = 2; i <= 4; i += 0.05) {
+			drawInfinity(i, displayWidth / 2, displayHeight / 2, rotationAngle, 0.3, 3, 255, 128, 255);
 		}
 	}
 
@@ -105,14 +146,15 @@ function canvasApp() {
 		var i;
 		var j = 0;
 
-		drawBackground(100);
+		drawBackground(33);
 
-		var angle = 0;
-		for (angle = 0; angle <= 360; angle += 30) {
-			for (i = 2; i <= 4; i += 0.01) {
-				drawInfinity(i, displayWidth / 2, displayHeight / 2, angle, 0.3, 1);
-			}
-		}
+		/*
+		 *var angle = 0;
+		 *for (angle = 0; angle <= 360; angle += 30) {
+		 *    drawCentral(angle);
+		 *}
+		 */
+		drawCentral(30);
 	}
 		
 	function exportPressed(evt) {
