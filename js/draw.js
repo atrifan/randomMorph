@@ -36,8 +36,6 @@ function canvasApp() {
 	var exportCanvasContext = exportCanvas.getContext("2d");
 		
 	//buttons
-	var btnExport = document.getElementById("btnExport");
-	btnExport.addEventListener("click", exportPressed, false);
 	
 	var btnRegenerate = document.getElementById("btnRegenerate");
 	btnRegenerate.addEventListener("click", regeneratePressed, false);
