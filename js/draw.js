@@ -91,15 +91,6 @@ function canvasApp() {
 
 		var i = 0;
 		var tx, ty, rotationAngle, lineWidth, alpha, a;
-		for (i = 0; i < count; ++i) {
-			a = Math.random() * 10;
-			tx = random(0, displayWidth / 3);
-			ty = random(0, displayHeight);
-			rotationAngle = Math.random() * 90;
-			lineWidth = Math.random() * 20;
-			alpha = Math.max(Math.random() / 10, 0.1);
-			drawInfinity(a, tx, ty, rotationAngle, alpha, lineWidth, 255, 64, 64);
-		}
 
 		for (i = 0; i < count; ++i) {
 			a = Math.random() * 5;
@@ -130,7 +121,6 @@ function canvasApp() {
 			alpha = Math.max(Math.random() / 10, 0.1);
 			drawInfinity(a, tx, ty, rotationAngle, alpha, lineWidth, 64, 64, 255);
 		}
-
 	}
 
 	function drawCentral(rotationAngle) {
