@@ -198,6 +198,7 @@ function canvasApp() {
 		}
 	}
 	
+	/*
 	function onTimer() {
 		var i;
 		var cosTheta, sinTheta;
@@ -274,6 +275,89 @@ function canvasApp() {
 			}
 		}
 	}
+	*/
+
+	function rgbaToColor(r, g, b, a) {
+		var color = "rgba("+r+","+g+","+b+","+a+")";
+		return color;
+	}
+
+	function generateGradient(alpha) {
+		var r1 = Math.floor(Math.random() * 255);
+		var g1 = Math.floor(Math.random() * 128);
+		var b1 = Math.floor(Math.random() * 128);
+		var r2 = Math.floor(Math.random() * 255);
+		var g2 = Math.floor(Math.random() * 128);
+		var b2 = Math.floor(Math.random() * 128);
+		var grad = context.createLinearGradient(0, 0, 2, 2);
+		var c1 = rgbaToColor(r1, g1, b1, alpha);
+		var c2 = rgbaToColor(r2, g2, b2, alpha);
+		grad.addColorStop(0, c1);
+		grad.addColorStop(1, c2);
+		return c1;
+	}
+
+	function drawInfinity(a, step, rotationAngle, alpha) {
+		var t = -Math.PI;
+		var scale = a * Math.sqrt(2);
+		var x, y;
+
+		context.lineJoin = "miter";
+		context.strokeStyle = generateGradient(alpha);
+		context.lineWidth = lineWidth;
+		context.beginPath();
+
+		for (t = -2 * Math.PI; t <= 2 * Math.PI; t += step) {
+			context.moveTo(400 + 40 * x, 300 + 50 * y);
+			x = Math.cos(t) / (Math.sin(t) * Math.sin(t) + 1) * scale;
+			y = Math.cos(t) * Math.sin(t) / (Math.sin(t) * Math.sin(t) + 1) * scale;
+			context.lineTo(400 + 40 * x, 300 + 50 * y);
+		}
+
+		context.stroke();
+	}
+
+	function onTimer() {
+		var currentX = 0, currentY = 0;
+		var i;
+		var j = 0;
+
+		context.lineJoin = "miter";
+		context.lineWidth = lineWidth;
+
+		var amp = 100;
+		var frequency = 0.1;
+		var pi_factor = Math.floor(2 / frequency);
+		var iters = 10;
+
+/*
+ *        for (j = 0; j < iters; ++j) {
+ *            context.beginPath();
+ *
+ *            for (i = 0; i < pi_factor * Math.PI; i += 0.05) {
+ *                context.moveTo(200 + currentX * 10, 300 + j * 2 + currentY);
+ *                currentX = i;
+ *                currentY = amp * Math.sin(frequency * currentX);
+ *                context.lineTo(200 + currentX * 10, 300 + j * 2 + currentY);
+ *            }
+ *
+ *            context.stroke();
+ *            context.beginPath();
+ *
+ *            for (i = pi_factor * Math.PI; i >= 0; i -= 0.05) {
+ *                context.moveTo(200 + currentX * 10, 300 + j * 2 + currentY);
+ *                currentX = i;
+ *                currentY = -amp * Math.sin(frequency * currentX);
+ *                context.lineTo(200 + currentX * 10, 300 + j * 2 + currentY);
+ *            }
+ *
+ *            context.stroke();
+ *        }
+ */
+		for (i = 2; i <= 4; i += 0.3) {
+			drawInfinity(i, 0.05, 0, 1);
+		}
+	}
 		
 	//Here is the function that defines a noisy (but not wildly varying) data set which we will use to draw the curves.
 	//We first define the points in a linked list, but then store the values in an array.
@@ -298,9 +382,9 @@ function canvasApp() {
 				nextPoint = point.next;
 				
 				dx = nextPoint.x - point.x;
-				newX = 0.5*(point.x + nextPoint.x);
-				newY = 0.5*(point.y + nextPoint.y);
-				newY += dx*(Math.random()*2 - 1);
+				newX = 0.8*(point.x + nextPoint.x);
+				newY = 0.8*(point.y + nextPoint.y);
+				newY += dx*(Math.random()*1 - 1);
 				
 				var newPoint = {x:newX, y:newY};
 				
